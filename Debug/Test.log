@@ -1,0 +1,6 @@
+﻿  main.cpp
+C:\Users\amyho\source\repos\Test\Test\main.cpp(33,26): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\amyho\source\repos\Test\Test\main.cpp(34,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\amyho\source\repos\Test\Test\main.cpp(35,18): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\amyho\source\repos\Test\Test\main.cpp(36,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Test.vcxproj -> C:\Users\amyho\source\repos\Test\Debug\Test.exe
