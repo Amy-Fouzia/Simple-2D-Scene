@@ -45,17 +45,9 @@ TRIANGLE_BLUE = 0.4,
 TRIANGLE_GREEN = 0.4,
 TRIANGLE_OPACITY = 1.0;
 
-const float GROWTH_FACTOR = 1.01f;
-const float SHRINK_FACTOR = 0.99f;
-const int MAX_FRAME = 40;
-
-const float TRAN_VALUE = 0.025f;
-
 SDL_Window* g_display_window;
 
 bool g_game_is_running = true;
-bool g_is_growing = true;
-int  g_frame_counter = 0;
 
 ShaderProgram g_shader_program;
 glm::mat4 g_view_matrix,
@@ -173,6 +165,11 @@ const float ROT_ANGLE = glm::radians(1.5f);
 const float TRAN = 0.025f;
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float previous_ticks = 0.0f;
+float GROWTH_FACTOR = 1.5f; 
+float SHRINK_FACTOR = 0.5f;
+const int MAX_FRAME = 200;         
+int g_frame_counter = 0;
+bool g_is_growing = true;
 
 void update()
 {
@@ -180,28 +177,29 @@ void update()
     float delta = ticks - previous_ticks;
     previous_ticks = ticks;
 
-    //    LOG(++frame_counter);
-    g_frame_counter++;
+    angle += ROT_SPEED;
+    x_coord = RADIUS * std::cos(angle);
+    y_coord = RADIUS * std::sin(angle);
 
-    // Step 1
+    //
+    g_frame_counter++;
     if (g_frame_counter >= MAX_FRAME)
     {
         g_is_growing = !g_is_growing;
         g_frame_counter = 0;
     }
 
-    // ---- Step 2: update g_position ----
-    angle += ROT_SPEED;
+    glm::vec3 scale_vector;
+    scale_vector = glm::vec3(g_is_growing ? GROWTH_FACTOR : SHRINK_FACTOR,
+        g_is_growing ? GROWTH_FACTOR : SHRINK_FACTOR,
+        1.0f);
 
-    x_coord = RADIUS * std::cos(angle);
-    y_coord = RADIUS * std::sin(angle);
-
-    // ---- Step 3: reset model matrix and translate ----
     g_model_matrix = glm::mat4(1.0f);
     g_model_matrix = glm::translate(g_model_matrix, glm::vec3(x_coord, y_coord, 0.0f));
 
     e_model_matrix = glm::mat4(1.0f);
     e_model_matrix = glm::translate(g_model_matrix, glm::vec3(x_coord, y_coord, 0.0f));
+    e_model_matrix = glm::scale(e_model_matrix, scale_vector);
 }
 
 void draw_object(glm::mat4& object_model_matrix, GLuint& object_texture_id)
